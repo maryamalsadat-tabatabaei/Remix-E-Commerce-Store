@@ -10,6 +10,7 @@ import {
 } from "@remix-run/react";
 import Navbar from "./components/Navbar";
 import { ReactNode } from "react";
+import ShoppingCartModal from "./components/ShoppingCartModal";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -40,6 +41,7 @@ function Layout({ children }: { children: ReactNode }) {
     <>
       <Navbar />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</main>
+      <ShoppingCartModal />
     </>
   );
 }

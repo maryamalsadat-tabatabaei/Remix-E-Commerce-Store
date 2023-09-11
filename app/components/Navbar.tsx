@@ -1,5 +1,6 @@
 import type { V2_MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
+import { useCartStore } from "~/lib/useCart";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -9,6 +10,11 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export default function Navbar() {
+  const [toggleCart, totalItems] = useCartStore((state) => [
+    state.toggleShowCart,
+    state.totalItems,
+  ]);
+  console.log("toggleCart", toggleCart, "tottaoLitm", totalItems);
   return (
     <header className="relative z-10">
       <div className="bg-white">
@@ -23,7 +29,7 @@ export default function Navbar() {
                 </Link>
               </div>
               <button
-                // onClick={toggleCart}
+                onClick={toggleCart}
                 className="group -m-2 p-2 flex items-center"
               >
                 <svg
@@ -41,7 +47,7 @@ export default function Navbar() {
                   />
                 </svg>
                 <span className="ml-2 text-sm font-medium text-white bg-red-500 px-3 py-1 rounded-full">
-                  {/* {totalItems} */}0
+                  {totalItems}
                 </span>
               </button>
             </div>

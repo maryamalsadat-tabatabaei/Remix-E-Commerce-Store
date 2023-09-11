@@ -1,5 +1,5 @@
 import { json, type LoaderArgs, type V2_MetaFunction } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { Tab } from "@headlessui/react";
 import { client } from "~/lib/sanity";
 import { ProductId } from "~/lib/interface";
