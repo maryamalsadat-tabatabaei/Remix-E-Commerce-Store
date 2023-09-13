@@ -13,6 +13,7 @@ export interface Product {
 export interface ProductId {
   name: string;
   price: number;
+  stripeProductId: string;
   slug: {
     current: string;
   };

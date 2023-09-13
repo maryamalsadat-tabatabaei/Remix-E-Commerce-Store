@@ -14,7 +14,6 @@ export default function Navbar() {
     state.toggleShowCart,
     state.totalItems,
   ]);
-  console.log("toggleCart", toggleCart, "tottaoLitm", totalItems);
   return (
     <header className="relative z-10">
       <div className="bg-white">

@@ -25,9 +25,12 @@ export const useCartStore = create<State & Actions>((set, get) => ({
         (item) => item.slug.current === product.slug.current
       );
 
-      cartItemIndex !== -1
-        ? (updatedCart[cartItemIndex].quantity += 1)
-        : updatedCart.push({ ...product, quantity: 1 });
+      if (cartItemIndex !== -1) {
+        updatedCart[cartItemIndex].quantity =
+          (updatedCart[cartItemIndex].quantity || 0) + 1;
+      } else {
+        updatedCart.push({ ...product, quantity: 1 });
+      }
 
       return {
         cart: updatedCart,
