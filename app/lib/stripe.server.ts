@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { ProductId } from "./interface";
+import { urlFor } from "./sanityImageUrl";
 
 export function getDomainUrl(request: Request) {
   const host =
@@ -26,14 +27,23 @@ export const getStripeSession = async (
   const dataObj = JSON.parse(items);
 
   const lineItems = dataObj.map((product: ProductId) => {
+    const img = product.image[0].asset._ref;
+
     return {
-      price: product.stripeProductId,
-      quantity: product.quantity,
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: product.name,
+          images: [urlFor(img).url()],
+        },
+        unit_amount: product.price * 100,
+      },
       adjustable_quantity: {
         enabled: true,
         minimum: 1,
-        maximum: 10,
+        maximum: 5,
       },
+      quantity: product.quantity,
     };
   });
 
@@ -45,29 +55,15 @@ export const getStripeSession = async (
     shipping_address_collection: {
       allowed_countries: ["US", "CA"],
     },
+    shipping_options: [
+      {
+        shipping_rate: "shr_1Nq4J2Eg12ZgjhENyGbZdIbN",
+      },
+      { shipping_rate: "shr_1Nq4E8Eg12ZgjhENJ6mdO400" },
+    ],
     line_items: lineItems,
     success_url: `${domainUrl}/payment/success`,
     cancel_url: `${domainUrl}/payment/cancelled`,
-    // shipping_options: [{ shipping_rate: "shr_1M9N6vSEi48qcQQWQVHnuumn" }],
-    // line_items: req.body.items.map((item) => {
-    //   const img = item.image;
-    //   return {
-    //     price_data: {
-    //       currency: "usd",
-    //       product_data: {
-    //         name: item.name,
-    //         images: [img],
-    //       },
-    //       unit_amount: item.price * 100,
-    //     },
-    //     adjustable_quantity: {
-    //       enabled: true,
-    //       minimum: 1,
-    //       maximum: 5,
-    //     },
-    //     quantity: item.quantity,
-    //   };
-    // }),
   });
 
   return session.url as string;

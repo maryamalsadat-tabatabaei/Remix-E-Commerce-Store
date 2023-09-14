@@ -2,6 +2,7 @@ import { json, type LoaderArgs, type V2_MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { client } from "~/lib/sanity";
 import { Product } from "~/lib/interface";
+import ProductList from "~/components/ProductList";
 export const meta: V2_MetaFunction = () => {
   return [
     { title: "New Remix App" },
@@ -62,38 +63,7 @@ export default function IndexPage() {
         </div>
       </section>
 
-      <section id="products">
-        <div className="py-24 sm:py-32 lg:pt-32">
-          <div className="mt-6 grid grid-col-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8">
-            {products.map((product) => (
-              <div key={product.slug.current}>
-                <Link
-                  className="group relative"
-                  to={`/product/${product.slug.current}`}
-                >
-                  <div className="w-full h-56 rounded-md overflow-hidden group-hover:opacity-75 lg:h-72 xl:h-80">
-                    <img
-                      src={product.imageUrl}
-                      alt="Image of Product"
-                      className="w-full h-full object-center object-contain"
-                    />
-                  </div>
-                  <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-                  <p className="mt-1 text-sm font-medium text-gray-900">
-                    $ {product.price}
-                  </p>
-                  <p className="mt-1 text-sm font-medium text-gray-900">
-                    {product.author}
-                  </p>
-                  <p className="mt-1 text-sm font-medium text-gray-900">
-                    {product.pages} pages
-                  </p>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ProductList products={products} />
     </>
   );
 }

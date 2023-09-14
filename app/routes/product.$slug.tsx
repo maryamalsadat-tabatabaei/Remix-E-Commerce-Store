@@ -2,9 +2,11 @@ import { json, type LoaderArgs, type V2_MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Tab } from "@headlessui/react";
 import { client } from "~/lib/sanity";
-import { ProductId } from "~/lib/interface";
+import { Product, ProductId } from "~/lib/interface";
 import { urlFor } from "~/lib/sanityImageUrl";
 import { useCartStore } from "~/lib/useCart";
+import ProductItem from "~/components/ProductItem";
+import ProductDetail from "~/components/ProductDetail";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -15,6 +17,7 @@ export const meta: V2_MetaFunction = () => {
 
 interface iAppProps {
   product: ProductId;
+  products: Product[];
 }
 
 function classNames(...classes: any) {
@@ -23,12 +26,22 @@ function classNames(...classes: any) {
 
 export async function loader({ params }: LoaderArgs) {
   const query = `*[_type == 'product' &&  slug.current == '${params.slug}'][0]`;
+  const productsQuery = `*[_type == 'product']{
+    price,
+    slug,
+    name,
+    author,
+    pages,
+    "imageUrl":image[0].asset->url
+}`;
+
   const product = await client.fetch(query);
-  return json({ product });
+  const products = await client.fetch(productsQuery);
+  return json({ product, products });
 }
 
 export default function ProductDetailPage() {
-  const { product } = useLoaderData<typeof loader>() as iAppProps;
+  const { product, products } = useLoaderData<typeof loader>() as iAppProps;
   const addToCart = useCartStore((state) => state.addToCart);
 
   return (
@@ -77,8 +90,8 @@ export default function ProductDetailPage() {
             ))}
           </Tab.Panels>
         </Tab.Group>
-
-        <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
+        <ProductDetail product={product} />
+        {/* <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
           <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
             {product.name}
           </h1>
@@ -98,12 +111,24 @@ export default function ProductDetailPage() {
           <div className="mt-6">
             <div className="mt-10 flex sm:flex-col-1">
               <button
-                onClick={() => addToCart(product)}
+                onClick={() => addToCart(product, 1)}
                 className="capitalize mb-4 lg:mb-0 w-full flex-1 bg-indigo-600 border border-transparent rounded-md py-3 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-500"
               >
                 add to cart
               </button>
             </div>
+          </div>
+        </div> */}
+      </div>
+      <div className="mt-32">
+        <h2 className="text-center m-14 text-[#324d67] text-2xl">
+          You may also like
+        </h2>
+        <div className="relative w-full overflow-x-hidden h-[500px]">
+          <div className="animate-transfer-slide-right hover:animate-none flex justify-center gap-4 mt-5 absolute whitespace-nowrap will-change-transform w-[180%]">
+            {products.map((item) => (
+              <ProductItem key={item.slug.current} product={item} />
+            ))}
           </div>
         </div>
       </div>
