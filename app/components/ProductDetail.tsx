@@ -36,9 +36,9 @@ export default function ProductDetail({ product }: iAppProps) {
       </div>
 
       <div className="mt-3">
-        <p className="text-xl text-gray-900">{product.author}</p>
-        <p className="text-xl text-gray-900">$ {product.price}</p>
-        <p className="text-xl text-gray-900">{product.pages} pages</p>
+        <p className="text-xl text-gray-700">{product.author}</p>
+        <p className="text-xl text-gray-700">$ {product.price}</p>
+        <p className="text-xl text-gray-700">{product.pages} Pages</p>
       </div>
 
       <div className="mt-6">
@@ -50,15 +50,20 @@ export default function ProductDetail({ product }: iAppProps) {
       </div>
       <div className="flex mt-3 items-center gap-5">
         <h3 className="font-bold">Quantity:</h3>
-        <p className="flex flex-row p-1 border-gray-500">
+        <p className="flex flex-row p-1.5 border-gray-700 items-center">
           <span
-            className="text-base py-1 px-2 border-r-gray-500 text-black"
+            className="cursor-pointer text-base p-3 border border-r-gray-800 text-black"
             onClick={decQty}
           >
             <AiOutlineMinus />
           </span>
-          <span className="py-2 px-3 text-xl border-r-gray-500">{qty}</span>
-          <span className="text-base py-2 px-3 text-black" onClick={incQty}>
+          <span className="cursor-pointer py-1.5 px-3.5 text-xl border border-r-gray-800">
+            {qty}
+          </span>
+          <span
+            className="cursor-pointer text-base p-3 border text-black"
+            onClick={incQty}
+          >
             <AiOutlinePlus />
           </span>
         </p>
@@ -68,13 +73,13 @@ export default function ProductDetail({ product }: iAppProps) {
         <div className="mt-10 flex sm:flex-col-1 gap-8">
           <button
             onClick={() => addToCart(product, qty)}
-            className=" hover:scale-110 capitalize p-2 scale-100 mb-4 lg:mb-0 w-40 transform transition-transform text-red-600 border border-red-600 rounded-md text-center text-base font-medium hover:bg-red-600 hover:text-white"
+            className="hover:scale-110 capitalize w-40 py-2 px-5 mt-10 scale-100 mb-4 lg:mb-0 transform transition-transform text-red-600 border border-red-600 rounded-md shadow-md text-center text-base font-medium"
           >
             add to cart
           </button>
           <button
             type="button"
-            className="hover:scale-110 w-40 p-2 px-4 bg-red-600 text-white border-none mt-10 text-xl font-semibold cursor-pointer transform transition-transform scale-100"
+            className="hover:scale-110 capitalize w-40 py-2 px-5 mt-10 scale-100 mb-4 lg:mb-0 transform transition-transform text-white border bg-red-600 rounded-md shadow-md text-center text-base font-medium"
             onClick={handleBuyNow}
           >
             Buy Now

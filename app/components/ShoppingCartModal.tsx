@@ -5,9 +5,11 @@ import CartItemList from "./CartItemList";
 import CheckoutForm from "./CheckoutForm";
 
 const ShoppingCartModal = () => {
-  const { showCart: cartState, toggleShowCart: toggleShowCart } = useCartStore(
-    (state) => state
-  );
+  const {
+    showCart: cartState,
+    toggleShowCart: toggleShowCart,
+    totalQuantities: totalQuantities,
+  } = useCartStore((state) => state);
 
   return (
     <Transition.Root show={cartState} as={Fragment}>
@@ -40,7 +42,11 @@ const ShoppingCartModal = () => {
                     <div className="flex-1 overlfow-y-auto px-4 py-6 sm:px-6">
                       <div className="flex items-start justify-between">
                         <Dialog.Title className="text-lg font-medium text-gray-900">
-                          Shopping Cart
+                          Shopping Cart{" "}
+                          <span className="font-semibold text-gray-700">
+                            ({totalQuantities}{" "}
+                            {totalQuantities <= 1 ? "item" : "items"})
+                          </span>
                         </Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
                           <button

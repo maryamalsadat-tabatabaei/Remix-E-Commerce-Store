@@ -4,9 +4,9 @@ import { Tab } from "@headlessui/react";
 import { client } from "~/lib/sanity";
 import { Product, ProductId } from "~/lib/interface";
 import { urlFor } from "~/lib/sanityImageUrl";
-import { useCartStore } from "~/lib/useCart";
 import ProductItem from "~/components/ProductItem";
 import ProductDetail from "~/components/ProductDetail";
+import ProductSlider from "~/components/ProductSlider";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -42,13 +42,11 @@ export async function loader({ params }: LoaderArgs) {
 
 export default function ProductDetailPage() {
   const { product, products } = useLoaderData<typeof loader>() as iAppProps;
-  const addToCart = useCartStore((state) => state.addToCart);
 
   return (
     <main className="my-5">
-      <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
+      <div className="lg:grid lg:grid-cols-2 lg:gap-x-10 lg:items-start">
         <Tab.Group as="div" className="flex flex-col-reverse">
-          {/* Image Selector */}
           <div className="hidden mt-6 w-full max-w-2xl mx-auto sm:block lg:max-w-none">
             <Tab.List className="grid grid-cols-4 gap-6">
               {product.image.map((image) => (
@@ -91,34 +89,6 @@ export default function ProductDetailPage() {
           </Tab.Panels>
         </Tab.Group>
         <ProductDetail product={product} />
-        {/* <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
-          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
-            {product.name}
-          </h1>
-          <div className="mt-3">
-            <p className="text-xl text-gray-900">{product.author}</p>
-            <p className="text-xl text-gray-900">$ {product.price}</p>
-            <p className="text-xl text-gray-900">{product.pages} pages</p>
-          </div>
-
-          <div className="mt-6">
-            <div
-              className="text-base text-gray-700"
-              dangerouslySetInnerHTML={{ __html: product.description }}
-            ></div>
-          </div>
-
-          <div className="mt-6">
-            <div className="mt-10 flex sm:flex-col-1">
-              <button
-                onClick={() => addToCart(product, 1)}
-                className="capitalize mb-4 lg:mb-0 w-full flex-1 bg-indigo-600 border border-transparent rounded-md py-3 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-500"
-              >
-                add to cart
-              </button>
-            </div>
-          </div>
-        </div> */}
       </div>
       <div className="mt-32">
         <h2 className="text-center m-14 text-[#324d67] text-2xl">
@@ -130,6 +100,7 @@ export default function ProductDetailPage() {
               <ProductItem key={item.slug.current} product={item} />
             ))}
           </div>
+          {/* <ProductSlider /> */}
         </div>
       </div>
     </main>
